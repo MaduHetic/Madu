@@ -1,0 +1,33 @@
+---
+
+- name: Create file
+  file:
+    path: /madu
+    state: directory
+
+- name: Copy api
+  copy:
+    src: ../../../../../madu-back
+    dest: /madu
+
+- name: Docker login
+  docker_login:
+    username: "{{ application_docker_username }}"
+    password: "{{ application_docker_password }}"
+
+- name: Build an image and push it to a private repo
+  docker_image:
+    build:
+      path: /madu/madu-back
+    name: madu-back
+    repository: guillaudev/madu-back
+    tag: v1
+    push: yes
+    source: build
+
+- name: Copy docker-compose
+  copy:
+    src: ../templates/docker-compose.yml
+    dest: ~/madu/docker-compose.yml
+
+

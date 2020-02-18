@@ -1,0 +1,52 @@
+version: "3.1"
+
+services:
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: madu
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.9
+    depends_on:
+      - database
+    ports:
+      - 8090:80
+    networks:
+      - database
+    environment:
+      PMA_HOST: database
+      PMA_USER: user
+      PMA_PASSWORD: root
+
+  api:
+    image: node:12.14-buster
+    depends_on:
+      - database
+    restart: always
+    working_dir: /home/app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/home/app
+    command: npm run start:dev
+    environment:
+      DB_HOST: database
+      DB_USER: 'user'
+      DB_PASSWORD: 'root'
+      DB_NAME: 'madu'
+      JWT_TOKEN: ':g9{72mHiX38dK[C-M@(d7aDp2'
+    networks:
+      - database
+
+networks:
+  database:

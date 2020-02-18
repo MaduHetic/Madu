@@ -1,0 +1,20 @@
+application_docker_username: guillaudev
+application_docker_password: Trotinette07
+
+application_client_image: "{{ application_docker_registry }}/tp-client"
+application_client_tag: "v2"
+
+application_server_image: "{{ application_docker_registry }}/tp-server"
+application_server_tag: "v4.0.2"
+
+application_server_endpoint: http://35.180.45.185:3000
+
+# Database configuration
+
+application_db_host: database
+application_db_root_password: admin
+application_db_name: madu
+application_db_user: user
+application_db_password: root
+
+application_db_token: :g9{72mHiX38dK[C-M@(d7aDp2
