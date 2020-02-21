@@ -11,14 +11,16 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - {{ application_db_datadir }}:/var/lib/mysql
+      - ./data:/var/lib/mysql
     networks:
       - database
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.9
+    depends_on:
+      - database
     ports:
-      - {{ application_phm_port }}:80
+      - 8090:80
     networks:
       - database
     environment:
@@ -27,14 +29,10 @@ services:
       PMA_PASSWORD: {{ application_db_password }}
 
   api:
-    image: node:latest
+    image: guillaudev/madu_back:5.0
     restart: always
-    working_dir: /home/app
     ports:
-      - {{ application_server_port }}:3000
-    volumes:
-      - ./:/home/app
-    command: npm run start:dev
+      - 3000:3000
     environment:
       DB_HOST: {{ application_db_host }}
       DB_USER: {{ application_db_user }}
@@ -43,6 +41,22 @@ services:
       JWT_TOKEN: {{ application_db_token }}
     networks:
       - database
+      - front
+
+  front:
+    image: guillaudev/madu_front:6.0
+    ports:
+      - 80:80
+    networks:
+      - front
+
+  documentation:
+    image: httpd:latest
+    volumes:
+      - ./documentation:/usr/local/apache2/htdocs/
+    ports:
+      - 8081:80
 
 networks:
   database:
+  front:

@@ -2,32 +2,19 @@
 
 - name: Create file
   file:
-    path: /madu
+    path: madu/
     state: directory
 
-- name: Copy api
-  copy:
-    src: ../../../../../madu-back
-    dest: /madu
+- name: Copy docker-compose
+  template:
+    src: ../templates/docker-compose.yml
+    dest: madu/docker-compose.yml
 
 - name: Docker login
   docker_login:
-    username: "{{ application_docker_username }}"
-    password: "{{ application_docker_password }}"
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
 
-- name: Build an image and push it to a private repo
-  docker_image:
-    build:
-      path: /madu/madu-back
-    name: madu-back
-    repository: guillaudev/madu-back
-    tag: v1
-    push: yes
-    source: build
-
-- name: Copy docker-compose
-  copy:
-    src: ../templates/docker-compose.yml
-    dest: ~/madu/docker-compose.yml
-
-
+- name: Run docker-compose
+  docker_compose:
+    project_src: madu/

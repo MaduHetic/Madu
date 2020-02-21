@@ -1,7 +1,8 @@
 ---
 
-- name: Install
-  hosts: all
+- name: Pre Install
+  hosts: ec2
+  remote_user: ubuntu
   gather_facts: no
   become: true
   pre_tasks:
@@ -11,15 +12,17 @@
 
 
 - name: Install python and docker
-  hosts: application
+  hosts: ec2
+  remote_user: ubuntu
   become: true
   gather_facts: no
   roles:
   - { role: python, tags: ["python"] }
   - { role: geerlingguy.docker, tags: ["docker"] }
 
-- name: Docker-compose
-  hosts: application
+- name: Deploy docker-compose
+  hosts: ec2
+  remote_user: ubuntu
   become: true
   gather_facts: no
   roles:
