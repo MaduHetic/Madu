@@ -12,6 +12,6 @@ application_db_password: root
 
 application_db_token: :g9{72mHiX38dK[C-M@(d7aDp2
 
-docker_username: guillaudev
-docker_password: Trotinette07
+docker_username: 
+docker_password: 
 
