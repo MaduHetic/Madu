@@ -86,12 +86,12 @@ workflows:
   build-and-test:
     jobs:
       - test-back
-      - build-front:
-          requires:
-            - test-back
-          filters:
-            branches:
-              only: circle
+      #- build-front:
+      #    requires:
+      #       - test-back
+      #    filters:
+      #      branches:
+      #       only: circle
       - build-back:
           requires:
             - test-back
