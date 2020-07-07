@@ -4,10 +4,10 @@ jobs:
   test-back:
     docker:
       - image: circleci/node:latest
-    working_directory: /back
+    working_directory: ~/Madu/back
     steps:
       - checkout
-
+      path: ~/Madu
       # Download and cache dependencies
       - restore_cache:
           keys:
