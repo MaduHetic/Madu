@@ -2,6 +2,7 @@ import { client } from "../../helpers/api";
 import apiRoutes from "../../helpers/apiRoutes";
 
 function registerPoi(data) {
+  console.log(data);
   return client.request({
     method: "post",
     url: apiRoutes.registerPoi(),
@@ -9,39 +10,39 @@ function registerPoi(data) {
       name: data.name,
       address: data.address,
       city: data.city,
+      description: data.description,
       lat: data.lat.toString(),
       long: data.lng.toString(),
       postalCode: data.postCode,
-      description: data.description,
-      greenScore: data.greenScore,
       tags: data.tags,
+      typeGreenScore: data.typeGreenScore,
       type: data.type,
       price: data.price,
     }
   });
 }
 
-function getPoi() {
+function getPoi(id) {
   return client.request({
     method: "get",
-    url: apiRoutes.getPoi()
+    url: apiRoutes.getPoi(id)
   });
 }
 
-function updatePoi(data, id) {
+function updatePoi(data) {
   return client.request({
     method: "put",
-    url: apiRoutes.getProfile(id),
+    url: apiRoutes.getProfile(data.id),
     data: {
       name: data.name,
       address: data.address,
       city: data.city,
+      description: data.description,
       lat: data.lat.toString(),
       long: data.lng.toString(),
       postalCode: data.postCode,
-      description: data.description,
-      greenScore: data.greenScore,
       tags: data.tags,
+      typeGreenScore: data.typeGreenScore, // [{ id: 'string', percent: 'numberString' }]
       type: data.type,
       price: data.price,
     }

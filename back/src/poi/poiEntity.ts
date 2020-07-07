@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Poi {
@@ -7,6 +7,7 @@ export class Poi {
 
   @Column({
     length: 30,
+    unique: true,
   })
   name: string;
 
@@ -36,6 +37,13 @@ export class Poi {
   postalCode: string;
 
   @Column({
+    length: 50,
+    nullable: true,
+    default: null,
+  })
+  type: string;
+
+  @Column({
     length: 100,
     nullable: true,
     default: null,
@@ -60,4 +68,14 @@ export class Poi {
     default: null,
   })
   logo: string;
+
+  @CreateDateColumn()
+  dateCreate: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+    length: 300,
+  })
+  mainImg: string;
 }

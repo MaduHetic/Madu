@@ -2,15 +2,14 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { Api } from "./api";
 import { Actions, Events } from "./actions";
 
+import { saveCredentialsInStorage } from "../../middlewares/saveCredentials";
+
 function* signIn(action) {
   try {
     yield put(Actions.signIn.request(true));
     const request = yield call(Api.signIn, action.payload);
     if (request.status === 201) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify(request.data.access_token)
-      );
+      yield call(saveCredentialsInStorage, request.data.access_token);
       yield put(Actions.signIn.success(request.data.access_token));
     }
   } catch {
@@ -30,11 +29,6 @@ function* signUp() {
   }
 }
 
-function* signOut() {
-  yield put(Actions.signOut())
-  localStorage.removeItem('user');
-}
-
 function* getCurrentUser() {
   try {
     yield put(Actions.getCurrentUser.request(true));
@@ -50,6 +44,5 @@ function* getCurrentUser() {
 export function* rootSagas() {
   yield takeLatest(Events.signIn, signIn);
   yield takeLatest(Events.signUp, signUp);
-  yield takeLatest(Events.signOut, signOut);
   yield takeLatest(Events.getCurrentUser, getCurrentUser);
 }

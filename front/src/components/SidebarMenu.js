@@ -4,8 +4,13 @@ import styled from 'styled-components';
 import { Color, Font } from '../styles/variables';
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import BusinessOutlinedIcon from '@material-ui/icons/BusinessOutlined';
+import MeetingRoomOutlinedIcon from '@material-ui/icons/MeetingRoomOutlined';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
+import { User } from '../core/user';
+import CustomButton from './button/button';
+
+import Logo from '../images/maduLogo.png'
 
 const Sidebar = styled.aside`
     position: absolute;
@@ -16,16 +21,16 @@ const Sidebar = styled.aside`
     height: 100%;
     background: ${Color.white};
     ul {
-        margin-top: 30px;
-        a {
+        margin-top: 50px;
+        li > a {
             display: flex;
             justify-content: flex-start;
             align-items: center;
             padding: 8px 24px;
             font-size: ${Font.size.m};
             font-weight: ${Font.weight.bold};
+            color: ${Color.lightgrey2};
             text-transform: uppercase;
-            opacity: 0.3;
         }
         svg {
             width: 25px;
@@ -37,6 +42,7 @@ const Sidebar = styled.aside`
         a.active {
             position: relative;
             opacity: 1;
+            color: ${Color.main};
             background: ${Color.lightgrey};
             &:before {
                 position: absolute;
@@ -48,12 +54,58 @@ const Sidebar = styled.aside`
                 background: ${Color.main};
             }
         }
+
+        a.disconnect {
+            position: relative;
+            opacity: 1;
+            color: #EE6363;
+            margin-top: 30px;
+        }
     }
 `;
 
+const StyledButtonContainer = styled.div`
+    position: absolute;
+    bottom: 9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    & > span {
+        font-size: 1.6rem !important;
+        white-space: nowrap;
+    }
+`;
+
+const StyledLogo = styled.div`
+    width: 6rem;
+    height: 6rem;
+    background: ${Color.main};
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    & img {
+        width: 80%;
+        height: auto;
+    }
+`
+
+const StyledRole = styled.p`
+    text-align: center;
+    text-transform: uppercase;
+    color: ${Color.black};
+    line-height: 1.5;
+    margin-top: 1.6rem;
+`;
+
 const SidebarMenu = () => {
+    const logout = User.signOut();
     return (
         <Sidebar>
+            <StyledLogo>
+                <img src={Logo} alt="madu" />
+            </StyledLogo>
+            <StyledRole>Admin</StyledRole>
             <ul>
                 <li>
                     <NavLink to="/dashboard" activeClassName="active">
@@ -75,6 +127,21 @@ const SidebarMenu = () => {
                         <MapOutlinedIcon style={{ fontSize: 22 }}/>Map
                     </NavLink>
                 </li>
+                <li>
+                  <NavLink exact to='/' onClick={() => logout()} className="disconnect">
+                    <MeetingRoomOutlinedIcon style={{ fontSize: 22 }} />Déconnection
+                  </NavLink>
+                </li>
+                <StyledButtonContainer>
+                    <CustomButton
+                      text="Créer une fiche"
+                      size="large"
+                      textcolor={Color.white}
+                      backgroundcolor={Color.main}
+                      bordercolor={Color.main}
+                      href={`/create`}
+                    />
+                </StyledButtonContainer>
             </ul>
         </Sidebar>
     )

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 /**
  * Company entity from the database
@@ -23,6 +23,7 @@ export class Company {
    * name of company entity stock in db
    */
   @Column({
+    unique: true,
     length: 50,
   })
   name: string;
@@ -89,6 +90,11 @@ export class Company {
   })
   nbWorker: number;
 
+  @Column({
+    default: 1000,
+  })
+  range: number;
+
   /**
    * Date when the contract begin
    */
@@ -106,4 +112,7 @@ export class Company {
     default: '2020-10-10',
   })
   endDeal: string;
+
+  @CreateDateColumn()
+  createDate: string;
 }

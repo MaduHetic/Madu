@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from './companyEntity';
 import { Repository } from 'typeorm';
@@ -17,6 +17,17 @@ export class CompanyService {
     private readonly companyRepository: Repository<Company>,
   ) {}
 
+  async searchByName(name: string) {
+    const company =  await this.companyRepository.find({
+      where: {
+        name,
+      },
+    });
+    if (company.length > 0) {
+      throw new ConflictException(`Client with ${name} already exist`);
+    }
+  }
+
   /**
    * This method use to add or update a company in database
    * if the id is not null is for update else is for add
@@ -24,6 +35,7 @@ export class CompanyService {
    * @param id {number} | null}
    */
   async addCompany(companyDto, id = null) {
+    await this.searchByName(companyDto.name);
     const companyData = companyDto;
     if (id) {
       companyData.id = id;
@@ -58,5 +70,33 @@ export class CompanyService {
    */
   async deleteCompany(idCompany: number) {
     return await this.companyRepository.delete(idCompany);
+  }
+
+  async countCompany(): Promise<number> {
+    return await this.companyRepository.count();
+  }
+
+  async countNbType(type: string) {
+    return await this.companyRepository.count({
+      where: {
+        type,
+      },
+    });
+  }
+
+  async orderByDate(): Promise<Company[]> {
+    return await this.companyRepository.find({
+      order: {
+        createDate: 'ASC',
+      },
+    });
+  }
+
+  async getCompanyByDomainMail(domainMail: string) {
+    return await this.companyRepository.findOneOrFail({
+      domainMail,
+    }).catch(() => {
+      throw new UnauthorizedException(`Cannot find company domain mail ${domainMail}`);
+    });
   }
 }

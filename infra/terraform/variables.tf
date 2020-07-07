@@ -1,19 +1,13 @@
-variable "region" {
-  type = string
-}
-
-variable "ami" {
+variable "ssh_public_key" {
   type = string
 }
 
 variable "key_name" {
   type = string
+  default = "key_madu"
 }
 
-variable "instance_type" {
+variable "region" {
   type = string
-}
-
-variable "admin_madu" {
-  type = string
+  default = "eu-west-2"
 }

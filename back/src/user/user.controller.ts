@@ -1,12 +1,15 @@
-import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards, UsePipes, ValidationPipe, Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './userDto';
-import { RoleGuard } from '../guard/role.guard';
-import { Roles } from '../decorator/role.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AppUserDto } from './appUserDto';
+import { AuthGuard } from '@nestjs/passport';
 
 /**
  * User controller
  */
+@ApiBearerAuth()
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(readonly userService: UserService) {}
@@ -15,8 +18,6 @@ export class UserController {
    * method call to add new user
    * @param userDto
    */
-  @UseGuards(RoleGuard)
-  @Roles('admin')
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async addUser(@Body() userDto: UserDto) {
@@ -24,14 +25,25 @@ export class UserController {
   }
 
   /**
-   * test
+   * method to delete a user
+   * @param idUser
    */
-  @UseGuards(RoleGuard)
-  @Roles('admin')
-  @Get('test')
-  async toto() {
-    // tslint:disable-next-line:no-console
-    console.log('toto');
-    return 'TOTOT';
+  @Delete(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async deleteUer(@Param('id', new ParseIntPipe()) idUser: number) {
+    return 'deletUser';
+  }
+
+  @Post('app/register')
+  @UsePipes(new ValidationPipe({transform: true}))
+  async addAppUser(@Body() appUserDto: AppUserDto) {
+    return await this.userService.addUserApp(appUserDto);
+  }
+
+  @Get('test/:em')
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe({transform: true}))
+  async addEm(@Param('em', new ParseIntPipe()) em: number, @Request() user) {
+    return await this.userService.addCrystal(em, user.user);
   }
 }

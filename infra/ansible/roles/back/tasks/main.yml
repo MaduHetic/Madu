@@ -1,20 +1,19 @@
 ---
 
-- name: Create file
+- name: Create directory structure for application
   file:
-    path: ~/madu/
+    path: "{{ back_directory }}"
     state: directory
+    owner: "{{ back_user }}"
+    group: "{{ back_group }}"
 
-- name: Copy docker-compose
+- name: Upload docker-compose file
   template:
-    src: ../templates/docker-compose.yml
-    dest: ~/madu/docker-compose.yml
+    src: templates/docker-compose.yml
+    dest: "{{ back_directory }}/docker-compose.yml"
+    owner: "{{ back_user }}"
+    group: "{{ back_group }}"
 
-- name: Docker login
-  docker_login:
-    username: "{{ docker_username }}"
-    password: "{{ docker_password }}"
-
-- name: Run docker-compose
+- name: Start docker-compose project
   docker_compose:
-    project_src: ~/madu/
+    project_src: "{{ back_directory }}"
