@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/Madu/back
     steps:
       - checkout:
-        path: ~/Madu
+          path: ~/Madu
       # Download and cache dependencies
       - restore_cache:
           keys:
