@@ -1,0 +1,20 @@
+---
+
+- name: Create directory structure for application
+  file:
+    path: "{{ web_directory }}"
+    state: directory
+    owner: "{{ web_user }}"
+    group: "{{ web_group }}"
+
+- name: Upload docker-compose file
+  template:
+    src: templates/docker-compose.yml
+    dest: "{{ web_directory }}/docker-compose.yml"
+    owner: "{{ web_user }}"
+    group: "{{ web_group }}"
+
+
+- name: Start docker-compose project
+  docker_compose:
+    project_src: "{{ web_directory }}"

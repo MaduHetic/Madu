@@ -1,145 +1,136 @@
 import React from "react";
-import { Root } from "./style";
 import Chart from "react-apexcharts";
-import { Grid } from "@material-ui/core";
+import { Wrapper, TitleDefault } from '../../styles/global';
+import { ChartContainer } from './style';
+import { Stats } from "../../core/statsDashboard";
 
-const dataDonutClients = {
-    options: {
-        labels: ['Agence' ,'Co-working', 'École', 'Grand compte', 'Start-up', 'PME', 'Incubateur', 'Autre'],
-        title: {
-            text: `Clients totaux: ${140}`,
-            align: 'middle',
-            margin: 0,
-            offsetX: 0,
-            offsetY: 0,
-            floating: false,
-            style: {
-              fontSize:  '16px',
-              color:  '#263238'
+const Dashboard = () => {
+    const stats = Stats.stats();
+    if (!stats.company || !stats.poi || !stats.greenScore) return null;
+
+    const dataDonutClients = {
+        options: {
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '50%'
+                    }
+                }
             },
+            labels: stats.company.companyType.map(data => data.companyType),
+            colors:['#6A89CC', '#F8C291', '#E77F67', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
         },
-        colors:['#F8C291', '#E77F67', '#6A89CC', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
-    },
-    series: [44, 55, 41, 44, 55, 41, 44, 55]
-};
-
-const dataDonutPOI = {
-    options: {
-        labels: ['Food', 'Drink', 'Beauty', 'Fashion', 'Shop', 'Autre'],
-        title: {
-            text: `POI totaux: ${237}`,
-            align: 'middle',
-            margin: 0,
-            offsetX: 0,
-            offsetY: 0,
-            floating: false,
-            style: {
-              fontSize:  '16px',
-              color:  '#263238'
+        series: stats.company.companyType.map(data => data.nbType)
+    };
+    
+    const dataDonutPOI = {
+        options: {
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '50%'
+                    }
+                }
             },
+            labels: stats.poi.types.map(data => data.typeName),
+            colors:['#6A89CC', '#F8C291', '#E77F67', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
         },
-        colors:['#F8C291', '#E77F67', '#6A89CC', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
-    },
-    series: [134, 78, 25, 134, 78, 25]
-};
-
-const dataLine = {
-    options: {
-        chart: {
-            id: "basic-bar",
+        series: stats.poi.types.map(data => data.nbType)
+    };
+    
+    const dataLine = {
+        options: {
+            chart: {
+                id: "basic-bar",
+                toolbar: {
+                    show: false
+                }
+            },
+            xaxis: {
+                categories: ["06/19", "07/19", "08/19", "09/19", "10/19", "11/19", "12/19", "01/20", "02/20"]
+            },
+            colors:['#E77F67', '#6A89CC', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
+        },
+        series: [
+            // {
+            //     name: "Utilisateurs",
+            //     data: [10, 30, 70, 240, 320, 400, 510, 820]
+            // },
+            {
+                name: "Clients",
+                data: [1, 4, 10, 22, 40, 52, 60, 72]
+            },
+            {
+                name: "POI",
+                data: [30, 40, 45, 50, 49, 60, 70, 91]
+            }
+        ]
+    };
+    
+    const dataBar = {
+        options: {
+          chart: {
+            type: 'bar',
             toolbar: {
                 show: false
             }
+          },
+          colors: ['#6A89CC', '#E77F67', "#F8C291", '#CF6A87', '#82CCDD', '#786FA6'],
+          plotOptions: {
+            bar: {
+              horizontal: true
+            },
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          xaxis: {
+            categories: ['100', '90', '80', '70', '60', '50'],
+          },
         },
-        xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-        },
-        colors:['#F8C291', '#E77F67', '#6A89CC', '#CF6A87', '#82CCDD', '#786FA6', '#00B894', '#FF7675', '#FAB1A0', '#A29BFE']
-    },
-    series: [
-        {
-            name: "Utilisateurs",
-            data: [10, 30, 70, 240, 320, 400, 510, 820]
-        },
-        {
-            name: "Clients",
-            data: [1, 4, 10, 22, 40, 52, 60, 72]
-        },
-        {
-            name: "POI",
-            data: [30, 40, 45, 50, 49, 60, 70, 91]
-        }
-    ]
-};
+        series: [{
+            data: stats.greenScore.every(item => item === 0) ? [540, 580, 690, 1100, 1200, 1380] : stats.greenScore,
+        }]
+    }
 
-const dataBar = {
-    options: {
-      chart: {
-        type: 'bar',
-        toolbar: {
-            show: false
-        }
-      },
-      colors: ['#F8C291', '#E77F67', '#6A89CC', '#CF6A87', '#82CCDD', '#786FA6'],
-      plotOptions: {
-        bar: {
-          horizontal: true
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: ['10', '9', '8', '7', '6', '5'],
-      }
-    },
-    series: [{
-        data: [540, 580, 690, 1100, 1200, 1380],
-    }]
-}
-
-const Dashboard = () => {
     return (
-        <Root>
-            <Grid container spacing={1} justify="space-evenly" alignItems="center">
-                <Grid container item xs={12} spacing={3}>
-                    <Grid item xs={6}>
-                        <Chart
-                            type="line"
-                            width="84%"
-                            height="auto"
-                            {...dataLine}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Chart
-                            type="donut"
-                            width="84%"
-                            height="auto"
-                            {...dataDonutClients}
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container item xs={12} spacing={3}>
-                    <Grid item xs={6}>
-                        <Chart
-                            type="bar"
-                            width="84%"
-                            height="auto"
-                            {...dataBar}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Chart
-                            type="donut"
-                            width="84%"
-                            height="auto"
-                            {...dataDonutPOI}
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Root>
+        <>
+        <Wrapper>
+            <TitleDefault>
+                <h3 className="title">Key performance indicator</h3>
+            </TitleDefault>
+            <ChartContainer>
+                <div className="chartCard">
+                    <h4 className="title">Courbes des croissances</h4>
+                    <Chart
+                        type="line"
+                        {...dataLine}
+                    />
+                </div>
+                <div className="chartCard">
+                    <h4 className="title">Points d'intérêts ({stats.poi.nbPoi})</h4>
+                    <Chart
+                        type="donut"
+                        {...dataDonutPOI}
+                    />
+                </div>
+                <div className="chartCard">
+                    <h4 className="title">Green Score</h4>
+                    <Chart
+                        type="bar"
+                        {...dataBar}
+                    />
+                </div>
+                <div className="chartCard">
+                    <h4 className="title">Clients ({stats.company.nbCompany})</h4>
+                    <Chart
+                        type="donut"
+                        {...dataDonutClients}
+                    />
+                </div>
+            </ChartContainer>
+        </Wrapper>
+        </>
     )
 };
 

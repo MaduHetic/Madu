@@ -1,0 +1,6 @@
+---
+
+- name: Install database
+  hosts: [tag_stage_web]
+  roles:
+    - { role: web, tags: ['web'] }

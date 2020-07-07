@@ -2,14 +2,24 @@ import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Color, Font, Breakpoint } from '../styles/variables';
-import Logo from '../images/Logo.svg';
 import LogoMobile from '../images/Logo-white.svg';
-import CustomButton from '../components/Button/Button';
+import CustomButton from '../components/button/button';
+
+import background from '../images/background.jpg'
+import Logo from '../images/maduLogo.png'
 
 import { User } from '../core/user';
+
+const LogoContainer = styled.div`
+  width: 23rem;
+  height: auto;
+  & img {
+    width: 100%;
+    height: auto;
+  }
+`
 
 const SContainer = styled.div`
   display: flex;
@@ -25,15 +35,12 @@ const SContainer = styled.div`
   }
   .login-banner {
     max-width: 494px;
-    background: ${Color.main};
+    background-image: url(${background});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     @media screen and (max-width: ${Breakpoint.m}) {
       display: none;
-    }
-    div {
-      width: 116px;
-      img {
-        width: 100%;
-      }
     }
   }
   .login-content {
@@ -51,10 +58,11 @@ const SContainer = styled.div`
         width: 100%;
       }
     }
-    h1 {
+    h2 {
       margin-bottom: 30px;
       font-size: ${Font.size.xl};
-      font-weight: ${Font.weight.bold};
+      font-weight: ${Font.weight.xBold};
+      color: ${Color.black};
     }
   }
 `
@@ -91,15 +99,6 @@ const SInput = styled(TextField)`
   }
 `;
 
-const SButton = styled(Button)`
-  padding: 9.5px 12px !important;
-  width: 100%;
-  max-width: 172px;
-  font-size: ${Font.size.s} !important;
-  background-color: #FFC107 !important;
-  border-radius: 2rem !important;
-`;
-
 const Login = ({ history }) => {
   const signIn = User.signIn();
   const loggedIn = User.loggedIn();
@@ -113,16 +112,16 @@ const Login = ({ history }) => {
   return (
     <SContainer>
       <div className="login-banner">
-        <div>
+        <LogoContainer>
           <img src={Logo} alt="Logo Madu"/>
-        </div>
+        </LogoContainer>
       </div>
       <div className="login-content">
         <div>
           <div className="logo-mobile">
             <img src={LogoMobile} alt="Logo Madu"/>
           </div>
-          <h1>Connexion</h1>
+          <h2>Connexion</h2>
           <Formik
             initialValues={{ email: 'admin@admin.com', password: 'admin' }}
             onSubmit={values => {signIn(values)}}
@@ -155,8 +154,7 @@ const Login = ({ history }) => {
                 />
                 <Link to="/">Mot de passe oublié ?</Link>
                 <div className="form-group-btn">
-                  <SButton type="submit" disabled={false}>Connexion</SButton>
-                  <CustomButton text='Connexion' color={Color.main} type="submit" />
+                  <CustomButton text='Connexion' color={Color.main} size="large" type="submit" disabled={false} />
                 </div>
               </SForm>
             )}

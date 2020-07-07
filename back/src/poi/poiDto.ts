@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { PoiInterface } from './interfaces/poi.interface';
-import { IsArray, IsEnum, IsNumber, IsNumberString, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsNumberString, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { PriceEnum } from './enum/price.enum';
 import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
-import { Type } from '../type/typeEntity';
-import { TypeDto } from '../type/typeDto';
-import { Tag } from '../tags/tagEntity';
+import { PercentAndIdTag } from './percentAndIdTag';
+import { TypePoiEnum } from './enum/typePoiEnum';
+import { ImgPoiDto } from '../img-poi/imgPoiDto';
+import { Type } from 'class-transformer';
 
+/**
+ * Data attempt to add new poi
+ */
 @Injectable()
 export class PoiDto implements PoiInterface {
+
+  /**
+   * Address of Poi
+   */
   @ApiProperty({
     description: 'Address Of Poi',
   })
   @IsString()
   readonly address: string;
 
+  /**
+   * City of poi
+   */
   @ApiProperty({
     description: 'City of the Poi',
   })
   @IsString()
   readonly city: string;
 
+  /**
+   * Description of poi
+   */
   @ApiPropertyOptional({
     description: 'short description of the Poi',
   })
@@ -29,10 +43,13 @@ export class PoiDto implements PoiInterface {
   readonly description: string;
 
   @ApiPropertyOptional()
-  @IsNumberString()
+  @IsNumber()
   @IsOptional()
-  readonly greenScore: string;
+  readonly greenScore: number = 10;
 
+  /**
+   * Latitude of poi
+   */
   @ApiPropertyOptional({
     description: 'Latitude of the Poi',
   })
@@ -67,6 +84,7 @@ export class PoiDto implements PoiInterface {
   @IsArray()
   readonly tags: number[];
 
+  /*
   @ApiPropertyOptional({
     type: [Number],
     description: 'Array of id Poi type',
@@ -74,6 +92,22 @@ export class PoiDto implements PoiInterface {
   @IsOptional()
   @IsArray()
   readonly type: number[];
+  */
+
+  @ApiPropertyOptional({
+    type: [PercentAndIdTag],
+    description: 'Array of id type Green score',
+  })
+  // @IsArray()
+  @ValidateNested()
+  @IsOptional()
+  readonly typeGreenScore: PercentAndIdTag[];
+
+  @ApiProperty({
+    description: 'Type of poi ex (restaurant)',
+  })
+  @IsEnum(TypePoiEnum)
+  readonly type: string;
 
   @ApiProperty({
     description: 'Price range of the point of interest',
@@ -82,4 +116,11 @@ export class PoiDto implements PoiInterface {
   @IsEnum(PriceEnum)
   readonly price: string;
 
+  @IsOptional()
+  @IsString()
+  readonly mainImg: string;
+
+  @IsArray()
+  @IsOptional()
+  readonly imgsPoi: string[];
 }

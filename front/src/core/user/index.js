@@ -9,11 +9,14 @@ import {
   loggedIn,
 } from "./selectors";
 
+import { removeCredsFromStorage } from "../../middlewares/saveCredentials";
+
 function useSignOut() {
   const dispatch = useDispatch();
   return () => {
-    dispatch(Events.signOut())
-  };
+    removeCredsFromStorage();
+    dispatch(Actions.signOut());
+  }
 }
 
 function useSignIn() {

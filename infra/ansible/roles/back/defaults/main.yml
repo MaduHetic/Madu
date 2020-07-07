@@ -1,0 +1,13 @@
+back_user: ubuntu
+back_group: "{{ back_user }}"
+back_directory: "/home/{{ back_user }}/back"
+
+back_docker_image: guillaudev/madu_back
+back_docker_tag: latest
+
+back_mysql_host: ""
+back_mysql_user: ""
+back_mysql_password: ""
+back_mysql_name: ""
+
+back_port: 3000
