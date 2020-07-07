@@ -100,7 +100,7 @@ workflows:
               only: circle
       - deploy-prod:
           requires:
-            - build-front
+      #      - build-front
             - build-back
           filters:
             branches:
