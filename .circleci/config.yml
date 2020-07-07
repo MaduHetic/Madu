@@ -98,7 +98,7 @@ workflows:
           filters:
             branches:
               only: circle
-      - deploy-prod:
+      - deploy:
           requires:
       #      - build-front
             - build-back
