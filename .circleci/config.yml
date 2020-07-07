@@ -24,8 +24,85 @@ jobs:
 
       - run: yarn test
 
+  build-back:
+    environment:
+      IMAGE_NAME: guillaudev/madu_back
+    docker:
+      # specify the version
+      - image: circleci/node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+          TAG=latest.$CIRCLE_BUILD_NUM
+          docker build -t $IMAGE_NAME:$TAG ~/repo/back
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push $IMAGE_NAME:$TAG
+
+  build-front:
+    environment:
+      IMAGE_NAME: guillaudev/madu_front
+    docker:
+      # specify the version
+      - image: circleci/node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: |
+          TAG=latest.$CIRCLE_BUILD_NUM
+          docker build -t $IMAGE_NAME:$TAG ~/repo/front
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push $IMAGE_NAME:$TAG
+
+  deploy:
+    docker:
+      # specify the version
+      - image: circleci/python:3.8.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "8e:34:2b:07:42:f5:9d:2e:65:6c:c7:7f:b5:56:40:a1"
+      - setup_remote_docker
+      - run:
+          name: Install ansible and requirement
+          command: |
+            sudo apt update
+            pip install --user ansible
+            pip install -r ~/repo/automation/ansible/requi.txt
+      - run:
+          name: Add ansible.cfg
+          command: export ANSIBLE_CONFIG=~/repo/automation/ansible/ansible.cfg
+      - run:
+          name: Deploy production Ansible
+          command: |
+            cd ~/repo/automation/ansible
+            ansible-playbook -i inventory playbook.yml --user ubuntu --key-file=~/.ssh/id_rsa --extra-vars="application_docker_tag=0.1.CIRCLE_PREVIOUS_BUILD_NUM application_docker_image=$IMAGE_NAME"
+
 workflows:
   version: 2
   build-and-test:
     jobs:
       - test-back
+      - build-front:
+          requires:
+            - test-back
+          filters:
+            branches:
+              only: circle
+      - build-back:
+          requires:
+            - test-back
+          filters:
+            branches:
+              only: circle
+      - deploy-prod:
+          requires:
+            - build-front
+            - build-back
+          filters:
+            branches:
+              only: circle
