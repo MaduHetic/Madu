@@ -3,8 +3,8 @@ jobs:
 
   test-back:
     docker:
-      - image: circle/node:latest
-    working_directory:
+      - image: circle/node:lts
+    working_directory: ~/Madu/back
     steps:
       - checkout
 
