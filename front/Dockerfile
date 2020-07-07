@@ -4,13 +4,13 @@ WORKDIR /home/app
 
 COPY package.json .
 
-RUN yarn install
+RUN npm install
 
 ARG REACT_APP_API
 
 COPY . .
 
-RUN yarn run build
+RUN npm run build
 
 FROM nginx:alpine
 

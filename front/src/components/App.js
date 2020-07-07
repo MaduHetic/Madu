@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import DashboardLayout from '../components/dashboardLayout';
-import SidebarMenu from '/sidebarMenu';
+import SidebarMenu from './sidebarMenu';
 import Login from '../pages/login';
 import Dashboard from '../pages/dashboard';
 import ClientsList from '../pages/clients';
