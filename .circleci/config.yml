@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:latest
     working_directory: ~/Madu/back
     steps:
-      - checkout
+      - checkout:
         path: ~/Madu
       # Download and cache dependencies
       - restore_cache:
