@@ -97,11 +97,11 @@ workflows:
             - test-back
           filters:
             branches:
-              only: circle
+              only: recette
       - deploy:
           requires:
       #      - build-front
             - build-back
           filters:
             branches:
-              only: circle
+              only: recette
