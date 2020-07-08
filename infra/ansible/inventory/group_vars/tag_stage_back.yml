@@ -1,4 +1,4 @@
-back_mysql_host:
-back_mysql_user:
-back_mysql_password:
-back_mysql_name:
+back_mysql_host: terraform-20200706114047791900000001.cssgjke36kwd.eu-west-2.rds.amazonaws.com
+back_mysql_user: "user"
+back_mysql_password: "rootroot"
+back_mysql_name: "madu"
