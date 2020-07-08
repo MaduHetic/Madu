@@ -71,15 +71,15 @@ jobs:
           command: |
             sudo apt update
             pip install --user ansible
-            pip install -r ~/repo/automation/ansible/requi.txt
+            pip install -r ~/repo/infra/ansible/requi.txt
       - run:
           name: Add ansible.cfg
-          command: export ANSIBLE_CONFIG=~/repo/automation/ansible/ansible.cfg
+          command: export ANSIBLE_CONFIG=~/repo/infra/ansible/ansible.cfg
       - run:
           name: Deploy production Ansible
           command: |
-            cd ~/repo/automation/ansible
-            ansible-playbook -i inventory playbook.yml --user ubuntu --key-file=~/.ssh/id_rsa --extra-vars="application_docker_tag=0.1.CIRCLE_PREVIOUS_BUILD_NUM application_docker_image=$IMAGE_NAME"
+            cd ~/repo/infra/ansible
+            ansible-playbook -i inventory playbook.yml --user ubuntu --key-file=~/.ssh/id_rsa --extra-vars="application_docker_tag=latest.CIRCLE_PREVIOUS_BUILD_NUM application_docker_image=$IMAGE_NAME"
 
 workflows:
   version: 2
