@@ -10,4 +10,4 @@ Repo https://github.com/MaduHetic/madu-back
 
 ## Infra
 
-Repo https://github.com/MaduHetic/Madu/tree/master/infra
+Repo https://github.com/MaduHetic/Madu/tree/recette/infra
