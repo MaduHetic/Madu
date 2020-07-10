@@ -9,5 +9,6 @@ back_mysql_host: ""
 back_mysql_user: ""
 back_mysql_password: ""
 back_mysql_name: ""
+back_jwt_token: "':g9{72mHiX38dK[C-M@(d7aDp2'"
 
 back_port: 3000

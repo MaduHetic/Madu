@@ -9,7 +9,7 @@ services:
       DB_USER: {{ back_mysql_user }}
       DB_PASSWORD: {{ back_mysql_password }}
       DB_NAME: {{ back_mysql_name }}
-      JWT_TOKEN: ':g9{72mHiX38dK[C-M@(d7aDp2'
+      JWT_TOKEN: {{ back_jwt_token }}
     ports:
       - "{{ back_port }}:3000"
     command: npm run start

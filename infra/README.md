@@ -1,8 +1,12 @@
 # Build project
 
-## Terraform
+## Requirements
 
-Installer terraform [Terraform](https://www.terraform.io/downloads.html)
+- Install python3
+- Install [Terraform](https://www.terraform.io/downloads.html)
+- Install [Ansbile](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+
+## Terraform
 
 - Instance ec2 ubuntu 18.04 pour le back (api) avec security group sur le 3000 et un elastic load balancer
 - Instance ec2 ubuntu 18.04 pour le front avec security group sur le 80 et 22 et un elastic load balancer
@@ -17,16 +21,8 @@ ssh-keygen -t rsa -b 4096
 /Users/name_users/key_madu
 ```
 
-Aller dans le fichier terraform et lancer la commande 
-
 ```
-cd terraform
 Terraform init
-```
-
-puis ensuite 
-
-```
 Terraform plan
 Terraform apply
 ```
@@ -45,9 +41,8 @@ Pour les rôles :
 - Le rôle back copie le docker-compose et l'execute sur le server aws
 - Le rôle web copie le docker-compose et l'execute sur le server aws
 
-Aller chercher sur aws rds le endpoint de la database puis le copie coller dans tag_stage_back.yml
-Ensuite aller mettre l'ip du back dans le template du docker-compose du web
-
+Aller chercher sur aws rds le endpoint de la database puis le copie coller dans tag_stage_back.yml.
+Ensuite aller mettre l'ip du back dans tag_stage_web.yml
 Commande pour lancer ansible
 ```
  ansible-playbook -i inventory/ec2.py playbook.yml --user ubuntu --become --key ~/.ssh/key_madu
