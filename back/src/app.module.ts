@@ -40,6 +40,10 @@ import { ImgPoiModule } from './img-poi/img-poi.module';
 import { ImgPoi } from './img-poi/imgPoiEntity';
 import { ThemeQuizzModule } from './theme-quizz/theme-quizz.module';
 import { ThemeQuizz } from './theme-quizz/themeQuizzEntity';
+import { JoinUserPoiModule } from './join-user-poi/join-user-poi.module';
+import { JoinUserPoi } from './join-user-poi/joinUserPoiEntity';
+import { JoinUserThemeQuizzModule } from './join-user-theme-quizz/join-user-theme-quizz.module';
+import { JoinUserThemeQuizz } from './join-user-theme-quizz/joinUserThemeQuizzEntity';
 
 @Module({
   imports: [
@@ -68,6 +72,8 @@ import { ThemeQuizz } from './theme-quizz/themeQuizzEntity';
         JoinUserChallenge,
         ImgPoi,
         ThemeQuizz,
+        JoinUserPoi,
+        JoinUserThemeQuizz,
       ],
       synchronize: true,
     }),
@@ -92,6 +98,8 @@ import { ThemeQuizz } from './theme-quizz/themeQuizzEntity';
     JoinUserChallengeModule,
     ImgPoiModule,
     ThemeQuizzModule,
+    JoinUserPoiModule,
+    JoinUserThemeQuizzModule,
   ],
   controllers: [AppController],
   providers: [AppService],

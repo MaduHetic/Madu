@@ -66,6 +66,7 @@ export class Poi {
   @Column({
     nullable: true,
     default: null,
+    length: 500,
   })
   logo: string;
 
@@ -78,4 +79,9 @@ export class Poi {
     length: 300,
   })
   mainImg: string;
+
+  @Column({
+    default: 100,
+  })
+  reward: number;
 }

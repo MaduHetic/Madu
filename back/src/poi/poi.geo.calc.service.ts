@@ -4,6 +4,8 @@ import { PoiService } from './poi.service';
 import { Poi } from './poiEntity';
 import { Company } from '../company/companyEntity';
 import { ImgPoiService } from '../img-poi/img-poi.service';
+import { JoinTagPoiService } from '../join-tag-poi/join-tag-poi.service';
+import { PercentTypeGreenScoreAndPoiService } from '../percent-type-green-score-and-poi/percent-type-green-score-and-poi.service';
 
 @Injectable()
 export class PoiGeoCalcService {
@@ -11,6 +13,8 @@ export class PoiGeoCalcService {
     private readonly companyService: CompanyService,
     private readonly poiService: PoiService,
     private readonly imgPoiService: ImgPoiService,
+    private readonly joinTagPoiService: JoinTagPoiService,
+    private readonly percentTypeGreenScoreAndPoiService: PercentTypeGreenScoreAndPoiService,
   ) {}
 
   calcDist(poi, company: Company, x1: number, y1: number): number {
@@ -28,7 +32,7 @@ export class PoiGeoCalcService {
   }
 
   async getNearbyPoi(user) {
-    const company = await this.companyService.getOne(user.idCompany);
+    const company = await this.companyService.getOne(user.user.company.id);
     const pois = await this.poiService.getAllPoi();
     const x1 =  parseFloat(user.user.company.lat);
     const y1 =  parseFloat(user.user.company.long);
@@ -47,8 +51,12 @@ export class PoiGeoCalcService {
     const company = await this.companyService.getOne(user.company.idCompany);
     const x1 = parseFloat(company.lat);
     const y1 = parseFloat(company.long);
+    console.log(company);
     poi.distance = this.calcDist(poi, company, x1, y1);
+    poi.tags = await this.joinTagPoiService.serializeTagsData(
+      await this.joinTagPoiService.getAllCompanyTag(poi));
     const imgs = await this.imgPoiService.getImgs(poi);
+    poi.typeGreenScore = await this.percentTypeGreenScoreAndPoiService.getType(poi);
     poi.imgs = await this.imgPoiService.serializeImgUrl(imgs);
     return poi;
   }
