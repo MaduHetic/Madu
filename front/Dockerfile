@@ -6,6 +6,8 @@ COPY package.json .
 
 RUN yarn install
 
+ARG REACT_APP_API
+
 COPY . .
 
 RUN yarn run build
