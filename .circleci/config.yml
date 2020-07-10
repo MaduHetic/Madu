@@ -34,7 +34,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          TAG=latest.$CIRCLE_BUILD_NUM
+          TAG=latest.$CIRCLE_SHA1_SHORT
           docker build -t $IMAGE_NAME:$TAG ~/repo/back
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker push $IMAGE_NAME:$TAG
@@ -50,7 +50,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          TAG=latest.$CIRCLE_BUILD_NUM
+          TAG=latest.$CIRCLE_SHA1_SHORT
           docker build -t $IMAGE_NAME:$TAG ~/repo/front
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker push $IMAGE_NAME:$TAG
