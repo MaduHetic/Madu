@@ -11,6 +11,8 @@ import { TypeGreenScoreModule } from '../type-green-score/type-green-score.modul
 import { CompanyModule } from '../company/company.module';
 import { PoiGeoCalcService } from './poi.geo.calc.service';
 import { ImgPoiModule } from '../img-poi/img-poi.module';
+import { JoinUserPoiModule } from '../join-user-poi/join-user-poi.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { ImgPoiModule } from '../img-poi/img-poi.module';
     PercentTypeGreenScoreAndPoiModule,
     CompanyModule,
     ImgPoiModule,
+    JoinUserPoiModule,
   ],
   providers: [PoiService, PoiGeoCalcService],
   controllers: [PoiController],

@@ -1,6 +1,6 @@
 ---
 
 - name: Install back api
-  hosts: tag_component_back:&tag_stage_back
+  hosts: tag_component_back
   roles:
     - { role: back, tags: ['back'] }

@@ -25,3 +25,21 @@ variable "stage" {
   default = "staging"
   description = "application stage"
 }
+
+variable "username" {
+  type = string
+  default = "user"
+  description = "database username"
+}
+
+variable "password" {
+  type = string
+  default = "rootroot"
+  description = "database password"
+}
+
+variable "name" {
+  type = string
+  default = "madu"
+  description = "database name"
+}
